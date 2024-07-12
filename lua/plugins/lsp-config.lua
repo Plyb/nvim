@@ -26,10 +26,10 @@ return {
 			})
 			lspconfig.pyright.setup({
 				capabilites = capabilities,
-      })
+			})
 			lspconfig.clangd.setup({
 				capabilites = capabilities,
-      })
+			})
 
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
