@@ -8,6 +8,8 @@ vim.cmd("set number")
 
 vim.cmd("set clipboard+=unnamedplus")
 
+vim.cmd("set ignorecase")
+
 vim.cmd([[
 augroup highlight_yank
 autocmd!
@@ -28,3 +30,5 @@ end
 
 -- Lazy
 require("config.lazy")
+
+vim.keymap.set("n", "<leader>/", ":noh<cr>", {})

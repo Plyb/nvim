@@ -7,6 +7,9 @@ return {
         theme = "rose-pine",
         -- theme = "dracula",
       },
+      sections = {
+        lualine_c = { { "filename", path = 1 } },
+      },
     })
   end,
 }
