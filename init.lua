@@ -17,6 +17,11 @@ au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=2
 augroup END
 ]])
 
+vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
+vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
+vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
+vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
+
 -- Powershell
 if package.config:sub(1, 1) == "\\" then -- Check if the OS is windows by grabbing the path seperator.
 	vim.o.shell = "powershell"
