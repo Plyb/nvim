@@ -37,3 +37,5 @@ end
 require("config.lazy")
 
 vim.keymap.set("n", "<leader>/", ":noh<cr>", {})
+
+vim.cmd("set updatetime=100")
