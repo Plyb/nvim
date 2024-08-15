@@ -38,4 +38,7 @@ require("config.lazy")
 
 vim.keymap.set("n", "<leader>/", ":noh<cr>", {})
 
+vim.cmd("nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')")
+vim.cmd("nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')")
+
 vim.cmd("set updatetime=100")
