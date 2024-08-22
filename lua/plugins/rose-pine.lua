@@ -1,4 +1,4 @@
-return {
+set_return = {
   "rose-pine/neovim",
   name = "rose-pine",
   config = function()
@@ -57,3 +57,5 @@ return {
     vim.cmd("colorscheme rose-pine")
   end,
 }
+
+return {}
