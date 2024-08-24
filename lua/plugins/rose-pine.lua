@@ -1,4 +1,4 @@
-set_return = {
+local set_return = {
   "rose-pine/neovim",
   name = "rose-pine",
   config = function()
