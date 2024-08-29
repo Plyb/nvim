@@ -41,4 +41,7 @@ vim.keymap.set("n", "<leader>/", ":noh<cr>", {})
 vim.cmd("nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')")
 vim.cmd("nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')")
 
+vim.keymap.set("n", "<leader>z", ":set spell spelllang=en_us<CR>")
+vim.keymap.set("n", "<leader>zr", ":set nospell<CR>")
+
 vim.cmd("set updatetime=100")
