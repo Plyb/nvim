@@ -41,7 +41,7 @@ return {
           vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
             virtual_text = false,
             signs = true,
-            update_in_insert = false,
+            update_in_insert = true,
             underline = true,
           })
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {})
