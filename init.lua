@@ -9,6 +9,7 @@ vim.cmd("set number")
 vim.cmd("set clipboard+=unnamedplus")
 
 vim.cmd("set ignorecase")
+vim.cmd("set signcolumn=yes")
 
 vim.cmd([[
 augroup highlight_yank
