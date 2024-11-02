@@ -20,11 +20,27 @@ return {
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+      local function get_venv_path()
+        local cwd = vim.fn.getcwd()
+        return cwd .. "/venv"
+      end
+
       local lspconfig = require("lspconfig")
       lspconfig.lua_ls.setup({
         capabilites = capabilities,
       })
       lspconfig.pyright.setup({
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "workspace",
+            },
+            venvPath = get_venv_path(),
+            venv = "venv",
+          },
+        },
         capabilites = capabilities,
       })
       lspconfig.clangd.setup({
