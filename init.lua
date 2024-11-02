@@ -1,40 +1,50 @@
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
-vim.cmd("set shiftwidth=2")
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
 
-vim.cmd("set relativenumber")
-vim.cmd("set number")
+vim.opt.relativenumber = true
+vim.opt.number = true
 
-vim.cmd("set clipboard+=unnamedplus")
+vim.opt.mouse = "a"
+vim.opt.showmode = false
 
-vim.cmd("set ignorecase")
-vim.cmd("set signcolumn=yes")
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 
-vim.cmd([[
-augroup highlight_yank
-autocmd!
-au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=200})
-augroup END
-]])
+vim.opt.breakindent = true
+vim.opt.undofile = true
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+vim.opt.signcolumn = "yes"
+
+vim.opt.updatetime = 100
+
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+vim.opt.cursorline = true
+vim.opt.scrolloff = 10
 
 vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
 vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
 vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
 vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
 
--- Powershell
-if package.config:sub(1, 1) == "\\" then -- Check if the OS is windows by grabbing the path seperator.
-	vim.o.shell = "powershell"
-	vim.o.shellcmdflag =
-		"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-	vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-	vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-	vim.o.shellquote = ""
-	vim.o.shellxquote = ""
-end
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking text",
+	group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+	end,
+})
 
--- Lazy
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
 require("config.lazy")
 
 vim.keymap.set("n", "<leader>/", ":noh<cr>", {})
@@ -44,5 +54,3 @@ vim.cmd("nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')")
 
 vim.keymap.set("n", "<leader>z", ":set spell spelllang=en_us<CR>")
 vim.keymap.set("n", "<leader>zr", ":set nospell<CR>")
-
-vim.cmd("set updatetime=100")
