@@ -17,6 +17,7 @@ return {
 				"html",
 				"bash",
 				"markdown",
+				"glsl",
 			},
 			sync_install = false,
 			highlight = { enable = true },
