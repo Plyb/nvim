@@ -59,8 +59,8 @@ return {
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
       vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-      vim.keymap.set("n", "<leader>ne", vim.diagnostic.goto_next)
-      vim.keymap.set("n", "<leader>pe", vim.diagnostic.goto_prev)
+      vim.keymap.set("n", "<leader>n", vim.diagnostic.goto_next)
+      vim.keymap.set("n", "<leader>p", vim.diagnostic.goto_prev)
 
 
       vim.lsp.handlers["textDocument/publishDiagnostics"] =
