@@ -7,14 +7,14 @@ return {
       })
     end,
   },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "bashls" },
-      })
-    end,
-  },
+  -- {
+  --   "williamboman/mason-lspconfig.nvim",
+  --   config = function()
+  --     require("mason-lspconfig").setup({
+  --       ensure_installed = { "lua_ls", "pyright", "bashls" },
+  --     })
+  --   end,
+  -- },
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -43,9 +43,9 @@ return {
         },
         capabilites = capabilities,
       })
-      lspconfig.clangd.setup({
-        capabilites = capabilities,
-      })
+      -- lspconfig.clangd.setup({
+      --   capabilites = capabilities,
+      -- })
       lspconfig.bashls.setup({
         capabilites = capabilities,
       })
