@@ -1,6 +1,6 @@
 return {
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     config = function()
       require("mason").setup({
         PATH = "prepend",
@@ -11,7 +11,7 @@ return {
   --   "williamboman/mason-lspconfig.nvim",
   --   config = function()
   --     require("mason-lspconfig").setup({
-  --       ensure_installed = { "lua_ls", "pyright", "bashls" },
+  --       ensure_installed = { "lua_ls", "basedpyright", "bashls" },
   --     })
   --   end,
   -- },
@@ -29,9 +29,9 @@ return {
       lspconfig.lua_ls.setup({
         capabilites = capabilities,
       })
-      lspconfig.pyright.setup({
+      lspconfig.basedpyright.setup({
         settings = {
-          python = {
+          basedpyright= {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
@@ -39,6 +39,9 @@ return {
             },
             venvPath = get_venv_path(),
             venv = "venv",
+
+            typeCheckingMode = "standard",
+            -- reportUnknownMemberType = false,
           },
         },
         capabilites = capabilities,
