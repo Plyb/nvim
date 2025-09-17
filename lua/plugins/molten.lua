@@ -26,14 +26,11 @@ return {
       vim.keymap.set({"n"          }, "<C-S-h>"    , "<cmd>MoltenHideOutput<cr>"                 , NS)
       vim.keymap.set({"n"          }, "<C-S-s>"    , "<cmd>noautocmd MoltenEnterOutput<cr>"      , NS)
       vim.keymap.set({"n"          }, "<C-S-r>"    , "<cmd>MoltenReevaluateAll<cr>"              , NS)
-      vim.keymap.set({"n"          }, "<C-S-j>"    , "<cmd>MoltenNext<cr>"                       , NS)
-      vim.keymap.set({"n"          }, "<C-S-k>"    , "<cmd>MoltenPrev<cr>"                       , NS)
+      vim.keymap.set({"n"          }, "<C-S-j>"    , "/\\(```.\\|](\\)<cr>:nohl<cr>"             , NS)
+      vim.keymap.set({"n"          }, "<C-S-k>"    , "?\\(```.\\|](\\)<cr>:nohl<cr>"             , NS)
 
       vim.keymap.set({"n"          }, "<S-Enter>"  , function() require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
       vim.keymap.set({     "i"     }, "<S-Enter>"  , function() vim.cmd("stopinsert"); require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
-
-      vim.keymap.set({"n"          }, "<C-Tab>"      , "/\\(```.\\|](\\)<cr>:nohl<cr>"             , NS)
-      vim.keymap.set({"n"          }, "<C-S-Tab>"    , "?\\(```.\\|](\\)<cr>:nohl<cr>"             , NS)
 
       local custom_augroup = vim.api.nvim_create_augroup("CustomMoltenCommands", { clear = true })
       local molten_inited = false
