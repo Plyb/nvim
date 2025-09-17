@@ -7,14 +7,14 @@ return {
       })
     end,
   },
-  -- {
-  --   "williamboman/mason-lspconfig.nvim",
-  --   config = function()
-  --     require("mason-lspconfig").setup({
-  --       ensure_installed = { "lua_ls", "basedpyright", "bashls" },
-  --     })
-  --   end,
-  -- },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "lua_ls", "pyright", "bashls" },
+      })
+    end,
+  },
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -29,19 +29,17 @@ return {
       lspconfig.lua_ls.setup({
         capabilites = capabilities,
       })
-      lspconfig.basedpyright.setup({
+      lspconfig.pyright.setup({
         settings = {
-          basedpyright= {
+          pyright= {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
+              typeCheckingMode = "standard"
             },
             venvPath = get_venv_path(),
             venv = "venv",
-
-            typeCheckingMode = "standard",
-            -- reportUnknownMemberType = false,
           },
         },
         capabilites = capabilities,
@@ -52,10 +50,6 @@ return {
       lspconfig.bashls.setup({
         capabilites = capabilities,
       })
-      lspconfig.glslls.setup({
-        capabilities = capabilities,
-      })
-      vim.filetype.add({ extension = { vert = "glsl", frag = "glsl" } })
 
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
