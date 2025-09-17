@@ -76,6 +76,7 @@ return {
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {})
 
       vim.diagnostic.config({
+        severity_sort = true,
         signs = {
           text = {
             -- 
