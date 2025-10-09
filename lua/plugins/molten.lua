@@ -22,7 +22,9 @@ return {
       vim.g.molten_output_show_exec_time = false
 
       local NS = { noremap = true, silent = true }
+      -- Tmux in mintty interprets shift+enter as a linefeed. We need both for this to work
       vim.keymap.set({"x"          }, "<S-Enter>"  , ":<C-u>MoltenEvaluateVisual<cr>gv"          , NS)
+      vim.keymap.set({"x"          }, "<LF>"  , ":<C-u>MoltenEvaluateVisual<cr>gv"               , NS)
       vim.keymap.set({"n"          }, "<C-S-h>"    , "<cmd>MoltenHideOutput<cr>"                 , NS)
       vim.keymap.set({"n"          }, "<C-S-s>"    , "<cmd>noautocmd MoltenEnterOutput<cr>"      , NS)
       vim.keymap.set({"n"          }, "<C-S-r>"    , "<cmd>MoltenReevaluateAll<cr>"              , NS)
@@ -30,7 +32,9 @@ return {
       vim.keymap.set({"n"          }, "<C-S-k>"    , "?\\(```.\\|](\\)<cr>:nohl<cr>"             , NS)
 
       vim.keymap.set({"n"          }, "<S-Enter>"  , function() require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
+      vim.keymap.set({"n"          }, "<LF>"  , function() require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
       vim.keymap.set({     "i"     }, "<S-Enter>"  , function() vim.cmd("stopinsert"); require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
+      vim.keymap.set({     "i"     }, "<LF>"  , function() vim.cmd("stopinsert"); require("various-textobjs").mdFencedCodeBlock("inner"); vim.cmd("MoltenEvaluateOperator"); end, NS)
 
       local custom_augroup = vim.api.nvim_create_augroup("CustomMoltenCommands", { clear = true })
       local molten_inited = false
