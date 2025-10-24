@@ -8,9 +8,7 @@ vim.opt.number = true
 vim.opt.mouse = "a"
 vim.opt.showmode = false
 
-vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
-end)
+vim.g.clipboard = "osc52"
 
 vim.opt.breakindent = true
 vim.opt.undofile = true
