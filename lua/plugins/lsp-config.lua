@@ -25,10 +25,11 @@ return {
         return cwd .. "/venv"
       end
 
-      vim.lsp.config("lua_ls", {
+      local lspconfig = require("lspconfig")
+      lspconfig.lua_ls.setup({
         capabilites = capabilities,
       })
-      vim.lsp.config("pyright", {
+      lspconfig.pyright.setup({
         settings = {
           pyright= {
             analysis = {
@@ -43,10 +44,10 @@ return {
         },
         capabilites = capabilities,
       })
-      vim.lsp.config("clangd", {
+      lspconfig.clangd.setup({
         capabilites = capabilities,
       })
-      vim.lsp.config("bashls", {
+      lspconfig.bashls.setup({
         capabilites = capabilities,
       })
 
