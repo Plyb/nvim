@@ -14,7 +14,7 @@ return {
     },
   },
   opts = {
-    backend = "kitty",
+    backend = "sixel",
     integrations = {
       markdown = {
         enabled = true,
