@@ -5,16 +5,32 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local builtin = require("telescope.builtin")
+      local opts = {
+        hidden = true,
+      }
       require("telescope").setup({
         pickers = {
-          find_files = {
-            hidden = true,
-            no_ignore = false,
-            no_ignore_parent = false,
-          },
+          find_files = opts,
         },
       })
-      vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+
+      local is_inside_work_tree = {}
+
+      function find_files_git_ignore()
+        local cwd = vim.fn.getcwd()
+        if is_inside_work_tree[cwd] == nil then
+          vim.fn.system("git rev-parse --is-inside-work-tree")
+          is_inside_work_tree[cwd] = vim.v.shell_error == 0
+        end
+
+        if is_inside_work_tree[cwd] then
+          builtin.git_files(opts)
+        else
+          builtin.find_files(opts)
+        end
+      end
+
+      vim.keymap.set("n", "<leader>ff", find_files_git_ignore, {})
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
       vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
       vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
