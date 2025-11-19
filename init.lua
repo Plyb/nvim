@@ -56,3 +56,77 @@ vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = True, silent = True })
 vim.opt.foldlevel = 20
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- Use treesitter folds
+
+vim.api.nvim_create_user_command('ComputeKernelInit', function(opts)
+  local sbatch_lines = {
+    '#SBATCH --time=08:00:00', -- defaults
+    '#SBATCH --mem=32G',
+    '#SBATCH --gpus=1',
+  }
+  for _, arg in ipairs(opts.fargs) do
+    local key, val = string.match(arg, "([^=]+)=([^=]+)")
+    if key and val then
+      table.insert(sbatch_lines, "#SBATCH --" .. key .. "=" .. val)
+    end
+  end
+
+  local script = "#!/bin/bash\n\n"
+    .. [[
+script="#!/bin/bash
+
+#SBATCH --job-name=compute-kernel
+]]
+    .. table.concat(sbatch_lines, "\n")
+    .. [=[
+
+# Extract the first 192.168.* IP address
+ip=\$(hostname -I | tr ' ' '\\n' | grep -m1 '^192\\.168')
+
+# Use it to launch the Jupyter kernel
+jupyter kernel --ip=\"\$ip\"
+"
+
+# Launch job and capture job ID
+sbatch_output=$(echo "$script" | sbatch)
+job_id=$(echo "$sbatch_output" | awk '{print $NF}')
+
+# Construct the expected output file path (customize as needed)
+# Default Slurm output: slurm-<jobid>.out in current dir
+out_file="slurm-${job_id}.out"
+
+# Wait until the output file exists
+while [[ ! -f "$out_file" ]]; do
+  sleep 1
+done
+
+# Tail the file for the pattern; stop after finding the first match
+file_path=$(stdbuf -oL tail -F "$out_file" | \
+  grep --line-buffered -m 1 -oP '\[KernelApp\] Connection file: \K.*')
+
+# Print the extracted file_path
+echo "$file_path"
+
+rm "slurm-${job_id}.out"
+]=]
+
+  local tmpname = os.tmpname()
+  local f = io.open(tmpname, "w")
+  f:write(script)
+  f:close()
+
+  vim.api.nvim_echo({{'Launching on compute node (this takes a minute)...'}}, true, {})
+
+  local output = vim.fn.system({'bash', tmpname})
+  output = vim.trim(output)
+
+  os.remove(tmpname)
+
+  
+  vim.api.nvim_echo({{'Launched. Initializing Molten...'}}, true, {})
+
+  vim.cmd('MoltenInit ' .. output)
+end, {
+    nargs = '*',
+    desc = 'Start a kernel on a compute node and init Molten with it'
+})
+
