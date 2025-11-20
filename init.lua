@@ -70,20 +70,27 @@ vim.api.nvim_create_user_command('ComputeKernelInit', function(opts)
     end
   end
 
-  local script = "#!/bin/bash\n\n"
-    .. [[
+
+
+  local kernels = vim.fn.MoltenAvailableKernels()
+
+  vim.ui.select(kernels, {
+    prompt = 'Select a kernel',
+  }, function (kernel)
+    local script = "#!/bin/bash\n\n"
+      .. [[
 script="#!/bin/bash
 
 #SBATCH --job-name=compute-kernel
 ]]
-    .. table.concat(sbatch_lines, "\n")
-    .. [=[
+      .. table.concat(sbatch_lines, "\n")
+      .. [[
 
 # Extract the first 192.168.* IP address
 ip=\$(hostname -I | tr ' ' '\\n' | grep -m1 '^192\\.168')
 
 # Use it to launch the Jupyter kernel
-jupyter kernel --ip=\"\$ip\"
+jupyter kernel --ip=\"\$ip\" --kernel=\"]] .. kernel .. [=[\"
 "
 
 # Launch job and capture job ID
@@ -109,22 +116,23 @@ echo "$file_path"
 rm "slurm-${job_id}.out"
 ]=]
 
-  local tmpname = os.tmpname()
-  local f = io.open(tmpname, "w")
-  f:write(script)
-  f:close()
+    local tmpname = os.tmpname()
+    local f = io.open(tmpname, "w")
+    f:write(script)
+    f:close()
 
-  vim.api.nvim_echo({{'Launching on compute node (this takes a minute)...'}}, true, {})
+    vim.api.nvim_echo({{'Launching on compute node (this takes a minute)...'}}, true, {})
 
-  local output = vim.fn.system({'bash', tmpname})
-  output = vim.trim(output)
+    local output = vim.fn.system({'bash', tmpname})
+    output = vim.trim(output)
 
-  os.remove(tmpname)
+    os.remove(tmpname)
 
-  
-  vim.api.nvim_echo({{'Launched. Initializing Molten...'}}, true, {})
 
-  vim.cmd('MoltenInit ' .. output)
+    vim.api.nvim_echo({{'Launched. Initializing Molten...'}}, true, {})
+
+    vim.cmd('MoltenInit ' .. output)
+  end)
 end, {
     nargs = '*',
     desc = 'Start a kernel on a compute node and init Molten with it'
