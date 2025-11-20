@@ -77,9 +77,7 @@ vim.api.nvim_create_user_command('ComputeKernelInit', function(opts)
   vim.ui.select(kernels, {
     prompt = 'Select a kernel',
   }, function (kernel)
-    local script = "#!/bin/bash\n\n"
-      .. [[
-script="#!/bin/bash
+    local sbatch_script = [[#!/bin/bash
 
 #SBATCH --job-name=compute-kernel
 ]]
@@ -87,10 +85,14 @@ script="#!/bin/bash
       .. [[
 
 # Extract the first 192.168.* IP address
-ip=\$(hostname -I | tr ' ' '\\n' | grep -m1 '^192\\.168')
+ip=$(hostname -I | tr ' ' '\n' | grep -m1 '^192\.168')
 
 # Use it to launch the Jupyter kernel
-jupyter kernel --ip=\"\$ip\" --kernel=\"]] .. kernel .. [=[\"
+jupyter kernel --ip="$ip" --kernel="]] .. kernel .. '"'
+
+    local script = [[#!/bin/bash
+
+script="]] .. sbatch_script .. [=[
 "
 
 # Launch job and capture job ID
