@@ -70,8 +70,6 @@ vim.api.nvim_create_user_command('ComputeKernelInit', function(opts)
     end
   end
 
-
-
   local kernels = vim.fn.MoltenAvailableKernels()
 
   vim.ui.select(kernels, {
@@ -85,10 +83,10 @@ vim.api.nvim_create_user_command('ComputeKernelInit', function(opts)
       .. [[
 
 # Extract the first 192.168.* IP address
-ip=$(hostname -I | tr ' ' '\n' | grep -m1 '^192\.168')
+ip=\$(hostname -I | tr ' ' '\n' | grep -m1 '^192\.168')
 
 # Use it to launch the Jupyter kernel
-jupyter kernel --ip="$ip" --kernel="]] .. kernel .. '"'
+jupyter kernel --ip="\$ip" --kernel="]] .. kernel .. '"'
 
     local script = [[#!/bin/bash
 
@@ -115,7 +113,7 @@ file_path=$(stdbuf -oL tail -F "$out_file" | \
 # Print the extracted file_path
 echo "$file_path"
 
-rm "slurm-${job_id}.out"
+#rm "slurm-${job_id}.out"
 ]=]
 
     local tmpname = os.tmpname()
@@ -129,7 +127,6 @@ rm "slurm-${job_id}.out"
     output = vim.trim(output)
 
     os.remove(tmpname)
-
 
     vim.api.nvim_echo({{'Launched. Initializing Molten...'}}, true, {})
 
