@@ -113,7 +113,7 @@ file_path=$(stdbuf -oL tail -F "$out_file" | \
 # Print the extracted file_path
 echo "$file_path"
 
-#rm "slurm-${job_id}.out"
+rm "slurm-${job_id}.out"
 ]=]
 
     local tmpname = os.tmpname()
